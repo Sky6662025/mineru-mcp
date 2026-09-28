@@ -1,0 +1,120 @@
+{
+  "_comment": "MinerU MCP Server 在各 Agent 工具中的接入配置。占位符：<PYTHON> = python 解释器绝对路径，<ABS_PATH> = 本项目目录绝对路径。Windows 路径在 JSON 里需写双反斜杠 \\\\ 或直接用正斜杠 /。",
+  "_verified": "stdio 与 streamable-http 两种传输形态均已实测通过（26/26 断言）。各客户端配置文件路径与字段名核对自官方文档。",
+
+  "claude_desktop__stdio": {
+    "_path_windows": "%APPDATA%\\Claude\\claude_desktop_config.json",
+    "_path_macos": "~/Library/Application Support/Claude/claude_desktop_config.json",
+    "_note": "改完必须完全退出并重启 Claude Desktop（关窗口不够）；JSON 语法错误会导致 Claude Desktop 静默启动失败",
+    "mcpServers": {
+      "mineru": {
+        "command": "<PYTHON>",
+        "args": ["<ABS_PATH>/server.py"],
+        "env": {
+          "MINERU_API_BASE": "http://127.0.0.1:8000",
+          "MINERU_OUTPUT_DIR": "<ABS_PATH>/mineru_outputs"
+        }
+      }
+    }
+  },
+
+  "cursor__stdio": {
+    "_path_global": "~/.cursor/mcp.json  (Windows: %USERPROFILE%\\.cursor\\mcp.json)",
+    "_path_project": ".cursor/mcp.json  (项目根，可提交 git 与团队共享)",
+    "_note": "支持 ${env:NAME} / ${workspaceFolder} / ${userHome} 插值，可避免把密钥写进配置",
+    "mcpServers": {
+      "mineru": {
+        "command": "<PYTHON>",
+        "args": ["<ABS_PATH>/server.py"],
+        "env": {
+          "MINERU_API_BASE": "http://127.0.0.1:8000",
+          "MINERU_OUTPUT_DIR": "<ABS_PATH>/mineru_outputs"
+        }
+      }
+    }
+  },
+
+  "cursor__remote_http": {
+    "_note": "Cursor 远程只写 url 即可，它会自动检测 streamable HTTP 与 SSE —— 不要写 type 字段",
+    "mcpServers": {
+      "mineru": {
+        "url": "http://YOUR-SERVER:8765/mcp"
+      }
+    }
+  },
+
+  "cline__stdio": {
+    "_path_windows": "%APPDATA%\\Code\\User\\globalStorage\\saoudrizwan.claude-dev\\settings\\cline_mcp_settings.json",
+    "_path_macos": "~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json",
+    "_path_linux": "~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json",
+    "_path_cli": "~/.cline/mcp.json  (Cline CLI 独立版)",
+    "_note": "建议从 Cline 面板 MCP Servers 图标 → Configure 标签 → Configure MCP Servers 按钮打开该文件，由扩展自建目录结构。autoApprove 列出的工具免二次确认；Roo Code 分支字段略有差异（多 disabledTools / watchPaths，项目级为 .roo/mcp.json）",
+    "mcpServers": {
+      "mineru": {
+        "command": "<PYTHON>",
+        "args": ["<ABS_PATH>/server.py"],
+        "env": {
+          "MINERU_API_BASE": "http://127.0.0.1:8000",
+          "MINERU_OUTPUT_DIR": "<ABS_PATH>/mineru_outputs"
+        },
+        "disabled": false,
+        "autoApprove": ["mineru_server_info", "mineru_health", "mineru_parse_document"]
+      }
+    }
+  },
+
+  "cline__remote_http": {
+    "_note": "Cline 的 type 值是驼峰 streamableHttp（不是 streamable-http）。省略 type 会退回 legacy sse 传输",
+    "mcpServers": {
+      "mineru": {
+        "type": "streamableHttp",
+        "url": "http://YOUR-SERVER:8765/mcp",
+        "disabled": false,
+        "autoApprove": []
+      }
+    }
+  },
+
+  "workbuddy__stdio": {
+    "_path": "~/.workbuddy/mcp.json  (注意不是 .mcp.json)",
+    "_note": "与已有 server 合并写入，不要整体覆盖 mcpServers。写入后需在「连接器管理页 → 右上角自定义连接器」对新 server 点击『信任』才会启用",
+    "mcpServers": {
+      "mineru": {
+        "command": "<PYTHON>",
+        "args": ["<ABS_PATH>\\server.py"],
+        "env": {
+          "MINERU_API_BASE": "http://127.0.0.1:8000",
+          "MINERU_OUTPUT_DIR": "<ABS_PATH>\\mineru_outputs"
+        },
+        "cwd": "<ABS_PATH>"
+      }
+    }
+  },
+
+  "remote_mineru_server__stdio": {
+    "_comment": "MCP 跑在本地、MinerU API 在远端算力服务器 —— 最常见的远端用法，仍走 stdio，无需常驻 MCP 进程",
+    "mcpServers": {
+      "mineru": {
+        "command": "<PYTHON>",
+        "args": ["<ABS_PATH>/server.py"],
+        "env": {
+          "MINERU_API_BASE": "http://YOUR-SERVER-IP:8000",
+          "MINERU_API_KEY": "可选：服务端 api-server --api-key 设置的值",
+          "MINERU_TIMEOUT": "120",
+          "MINERU_VERIFY_SSL": "1",
+          "MINERU_OUTPUT_DIR": "<ABS_PATH>/mineru_outputs"
+        }
+      }
+    }
+  },
+
+  "remote_http_deployment__server_side": {
+    "_comment": "这是【服务端启动命令】，不是客户端配置。在一台能访问 MinerU API 的机器上常驻运行，多个 Agent 通过 URL 共享同一实例。",
+    "_command": "<PYTHON> <ABS_PATH>/server.py --transport streamable-http --host 0.0.0.0 --port 8765 --api-base http://127.0.0.1:8000",
+    "_endpoints": {
+      "streamable-http": "http://HOST:8765/mcp",
+      "sse": "http://HOST:8765/sse  (消息回传端点 /messages/)"
+    },
+    "_client_side": "各 Agent 用上面的 cursor__remote_http 或 cline__remote_http 片段接入"
+  }
+}

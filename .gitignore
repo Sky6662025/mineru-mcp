@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# 运行产物：解析结果默认落盘目录（内容随使用变化，不入库）
+mineru_outputs/
+
+# 环境变量与密钥（只提交 .env.example 模板）
+.env
+.env.local
+*.key
+*.pem
+
+# 本机临时冒烟测试脚本与测试素材（含硬编码本机绝对路径）
+_mcp_*.py
+test_card.png
+
+# 开发期 API 逆向中间产物（保留 tiny.pdf 自检样本与 check_docs.py）
+dev/openapi.json
+dev/endpoints_detail.txt
+dev/schemas_detail.txt
+dev/key_schemas.txt
+dev/sample_out.md
+dev/probe*.py
+
+# 真实文档解析样例（含企业内部资料，不公开）
+examples/
+
+# 打包分发产物
+*.zip
+
+# IDE / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

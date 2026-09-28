@@ -1,0 +1,11 @@
+# MinerU v4 MCP Server / Client —— 依赖清单
+#
+# 安装：  pip install -r requirements.txt
+# 建议用独立 venv，避免污染系统环境。
+#
+# 注意：必须使用 mcp 1.x（<2）。mcp 2.x 重构了 API（FastMCP→MCPServer），
+#       与当前主流 Agent 工具（Claude Desktop / Cursor / Cline 等）的客户端实现不兼容。
+
+mcp>=1.2.0,<2.0.0
+httpx>=0.27.0
+pydantic>=2.5.0
