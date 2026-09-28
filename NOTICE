@@ -1,0 +1,41 @@
+MinerU v4 MCP Server & Client
+Copyright 2026 Sky6662025
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+关于上游 MinerU 的授权边界
+======================================================================
+
+本项目通过 HTTP REST API 访问 MinerU（https://github.com/opendatalab/MinerU），
+不链接、不嵌入、不修改、也不再分发 MinerU 的源代码或模型权重，因此不构成
+MinerU 的衍生作品。
+
+MinerU 本身由其作者独立授权，采用 GNU Affero General Public License v3.0
+（AGPL-3.0）。该许可约束的是 MinerU 自身的使用与分发，不延伸至本项目。
+
+注意：若你将 MinerU 引擎、容器镜像或模型权重与本项目**一并打包分发**，
+则合并后的整体需遵守 MinerU 的许可条款（以及各模型权重自身的许可条款）。
+本项目的 Apache-2.0 授权不改变这一点。
+
+
+第三方依赖
+======================================================================
+
+本项目运行时依赖以下 Python 包，各自遵循其自身的开源许可：
+
+    mcp       Model Context Protocol Python SDK    MIT
+    httpx     HTTP 客户端                           BSD-3-Clause
+    pydantic  数据校验                              MIT
+
+上述依赖未被本项目再分发。

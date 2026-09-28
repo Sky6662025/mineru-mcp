@@ -29,6 +29,7 @@
 - [已知边界](#已知边界)
 - [目录结构](#目录结构)
 - [相关文档](#相关文档)
+- [许可证](#许可证)
 
 ---
 
@@ -405,3 +406,23 @@ mineru-mcp/
 | [docs/narrative.md](docs/narrative.md) | 功能与特点的叙事式描述 |
 | [docs/architecture.svg](docs/architecture.svg) | 六层分层架构图 |
 | [mcp_config_examples.json](mcp_config_examples.json) | 八类接入场景的配置片段 |
+
+---
+
+## 许可证
+
+本项目采用 **Apache License 2.0**，全文见 [LICENSE](LICENSE)。
+
+```text
+Copyright 2026 Sky6662025
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+```
+
+选 Apache-2.0 而不是 MIT，是因为它额外给出**明确的专利授权**（第 3 条）和**商标条款**（第 6 条）——对「企业内网 / 自托管」这个目标场景，这两条比代码长短更重要。
+
+**与上游 MinerU 的关系**：本项目通过 HTTP REST API 调用 MinerU，不链接、不嵌入、不修改其代码，因此不构成衍生作品。MinerU 自身由其作者采用 **AGPL-3.0** 授权，该约束不延伸至本项目。但若你把 MinerU 引擎、容器镜像或模型权重与本项目**一并打包分发**，合并后的整体就需遵守 MinerU 的许可条款。详见 [NOTICE](NOTICE)。
